@@ -1,0 +1,14 @@
+@import '../../styles/colors.scss';
+@import '../../styles/variables.scss';
+
+.base-layout-container{
+    min-height: 100vh;
+    background: $primary-background-color;
+    position: relative;
+    .view-wrapper{
+        width: 100%;
+        height: calc(100vh - #{$header-height + 40px});
+        overflow-y: auto;
+        padding-top: 110px;
+    }
+  }
