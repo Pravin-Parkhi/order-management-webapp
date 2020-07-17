@@ -7,8 +7,8 @@
     position: relative;
     .view-wrapper{
         width: 100%;
-        height: calc(100vh - #{$header-height + 40px});
+        height: calc(100vh - #{$header-height});
         overflow-y: auto;
-        padding-top: 110px;
+        padding-top: $header-height;
     }
   }

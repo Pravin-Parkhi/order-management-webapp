@@ -2,7 +2,7 @@ import ActionTypes from '../action-types/index'
 import { ORDER_LIST } from '../mock-data/index'
 
 const defaultState = {
-  orderList: ORDER_LIST
+  orderList: ORDER_LIST.orderList
 };
 
 const appReducer = (state = defaultState, action) => {
@@ -11,7 +11,7 @@ const appReducer = (state = defaultState, action) => {
     case ActionTypes.GET_ORDER_LIST: {
       return {
         ...state,
-        billList: state.orderList
+        orderList: state.orderList
       }
     }
 

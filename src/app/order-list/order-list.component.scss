@@ -1,1 +1,38 @@
-.order-list-wrapper{}
+@import '../../styles/colors.scss';
+
+.order-list-wrapper{
+    margin: 20px;
+
+    .section-heading{
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .order-list-table{
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        tbody{
+            tr:hover{
+                transform: scale(1,1);
+                cursor: pointer;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            }
+        }
+        td, th {
+            border: 1px solid $alto-color;
+            text-align: left;
+            padding: 30px 10px;
+        }
+        .status{
+            text-transform: capitalize;
+        }
+        .pending{
+            color: $completed-status-color;
+        }
+        .completed{
+            color: $pending-status-color;
+        }
+    }
+}
