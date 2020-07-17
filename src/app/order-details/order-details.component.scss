@@ -1,3 +1,28 @@
 .order-details-wrapper{
     padding: 20px;
+    @media screen and (min-width: 768px) {
+        padding: 80px;
+    }
+    
+    .address-container{
+        width: 100%;
+        padding-bottom: 20px;
+        @media screen and (min-width: 768px) {
+            display: flex;
+            padding-bottom: 60px;
+        }
+
+        .billing-address, .shipping-address{
+            margin-bottom: 10px;
+            margin: 0px 20px;
+            @media screen and (min-width: 768px) {
+                width: 33%;
+            }
+
+            .sub-section-heading{
+                font-size: 18px;
+                font-weight: 600;
+            }
+        }
+    }
 }

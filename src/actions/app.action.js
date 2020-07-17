@@ -5,3 +5,10 @@ export const getOrderList = () => {
     type: ActionTypes.GET_ORDER_LIST
   }
 }
+
+export const getOrderDetails = (params) => {
+  return {
+    type: ActionTypes.GET_ORDER_DETAILS,
+    orderId: params.orderId
+  }
+}

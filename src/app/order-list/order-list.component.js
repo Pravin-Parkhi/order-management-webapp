@@ -11,12 +11,16 @@ const OrderStatusList = {
 }
 
 function OrderList (props) {
-  const { orderList } = props
+  const { history, orderList } = props
+
+  const handleOrderClick = (order) => {
+    history.push(`/order-details/${order.orderId}`)
+  }
 
   const renderOrder = (order, index) => {
     const { orderId, status, shippingAddress } = order
     return(
-      <tr key={order.orderId}>
+      <tr key={order.orderId} onClick={() => handleOrderClick(order)}>
         <td>{orderId}</td>
         <td>{`${shippingAddress.addressLine1 || ''} ${shippingAddress.addressLine2 || ''} `}</td>
         <td

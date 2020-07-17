@@ -15,6 +15,16 @@ const appReducer = (state = defaultState, action) => {
       }
     }
 
+    case ActionTypes.GET_ORDER_DETAILS: {
+      const orderList = state.orderList
+      const orderId = action.orderId
+      const orderDetails = orderList.find((order => order.orderId === orderId))
+      return {
+        ...state,
+        orderDetails: orderDetails
+      }
+    }
+
     default:
       return state
   }
