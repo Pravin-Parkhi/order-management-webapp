@@ -1,7 +1,12 @@
+@import '../../styles/colors.scss';
+
 .order-details-wrapper{
     padding: 20px;
     @media screen and (min-width: 768px) {
         padding: 80px;
+    }
+    .card-wrapper:nth-child(2){
+        margin-top: 40px;
     }
     
     .address-container{
@@ -23,6 +28,32 @@
                 font-size: 18px;
                 font-weight: 600;
             }
+        }
+    }
+
+    .product-list-wrapper{
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        tbody{
+            tr:hover{
+                transform: scale(1,1);
+                cursor: pointer;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            }
+        }
+        td, th {
+            border: 1px solid $alto-color;
+            text-align: left;
+            padding: 30px 10px;
+        }
+        .action-wrapper{
+            display: flex;
+        }
+        .save-button-wrapper{
+            display: flex;
+            justify-content: flex-end;
         }
     }
 }

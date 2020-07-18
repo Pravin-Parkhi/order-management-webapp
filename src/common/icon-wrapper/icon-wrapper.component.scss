@@ -1,0 +1,20 @@
+@import '../../styles/colors.scss';
+
+.icon-wrapper{
+    width: 20px;
+    height: 20px;
+    padding: 10px;
+    display: flex;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    
+    @media screen and (min-width: 768px) {
+        width: 30px;
+        height: 30px;
+    }
+    &:hover{
+        cursor: pointer;
+        background-color: $primary-background-color;
+    }
+}

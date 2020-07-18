@@ -4,6 +4,8 @@ import './card.component.scss'
 
 export default function Card (props) {
   return (
-    <div className='card-wrapper'>{props.children}</div>
+    <div className='card-wrapper'>
+      {props.children}
+    </div>
   )
 }

@@ -1,0 +1,31 @@
+@import '../../styles/colors.scss';
+
+.default-button{
+    margin: 5px 0px;
+    padding: 0px 10px;
+    outline: none;
+    border: 0px;
+    font-family: 'Open Sans';
+    text-transform: uppercase;
+}
+.small{
+    padding: 5px 10px;
+}
+
+.medium{
+    padding: 10px 15px;
+}
+
+.large{
+    padding: 15px;
+}
+
+.info{
+    color: $white-color;
+    background-color: $input-focused-color;
+}
+
+.danger{
+    color: $white-color;
+    background-color: $input-error-color;
+}

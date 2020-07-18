@@ -24,10 +24,10 @@ function OrderList (props) {
         <td>{orderId}</td>
         <td>{`${shippingAddress.addressLine1 || ''} ${shippingAddress.addressLine2 || ''} `}</td>
         <td
-          className={classNames(['status', { 
-            'pending': status === OrderStatusList.pending }, { 'completed': status === OrderStatusList.completed 
-          }])}
-        >
+          className={classNames(['status', 
+          { 'pending': status === OrderStatusList.pending },
+          { 'completed': status === OrderStatusList.completed }
+        ])}>
           {status}
         </td>
       </tr>
