@@ -1,23 +1,74 @@
 import { connect } from 'react-redux'
-import React, { useEffect } from 'react'
-import { IconContext } from "react-icons"
-import { GrEdit } from 'react-icons/gr'
-import { RiDeleteBin6Line } from 'react-icons/ri'
+import React, { useState, useEffect } from 'react'
 import { getOrderDetails } from '../../actions/app.action'
+import { validateFormField, validateForm, validations } from '../../utils/validation.utils'
 
+import Product from './product/product.component'
 import Card from '../../common/card/card.component'
 import Button from '../../common/button/button.component'
 import InputField from '../../common/input-field/input-field.component'
-import IconWrapper from '../../common/icon-wrapper/icon-wrapper.component'
 
 import './order-details.component.scss'
+import { deepCopy, getUUID } from '../../utils/misc.utils'
+
+const requiredFields = ['firstName']
+const formRegex = {
+  amount: validations.number
+}
 
 function OrderDetails (props) {
+  const [ values, setValues ] = useState({})
+  const [ errors, setErrors ] = useState({})
+
+  const { billingAddress, shippingAddress } = values
   const { orderDetails } = props
   const { getOrderDetails } = props
 
-  const handleOnChange = () => {
-    console.log()
+  const handleBillingAddressOnChange = event => {
+    const {name, value} = event.target
+    
+    setValues({ 
+      ...values,
+      billingAddress: {
+        ...values.billingAddress,
+        [name]: value
+      }
+    });
+
+    // validate({
+    //   ...values,
+    //   [name]: value
+    // }, name)
+  }
+
+  const handleShippingAddressOnChange = event => {
+    const {name, value} = event.target
+    
+    setValues({ 
+      ...values,
+      billingAddress: {
+        ...values.billingAddress,
+        [name]: value
+      }
+    });
+
+    // validate({
+    //   ...values,
+    //   [name]: value
+    // }, name)
+  }
+
+  const validate = (form, prop) => {
+    form = form || values
+    if (prop) {
+      let error = validateFormField(form[prop], formRegex[prop], requiredFields.indexOf(prop) >= 0)
+      setErrors({ ...errors, [prop]: error })
+      return error
+    } else {
+      const errorObj = validateForm(form, formRegex, requiredFields)
+      setErrors({ ...errors, ...errorObj.fieldErrors })
+      return errorObj.hasError
+    }
   }
 
   const fetchOrderDetails = () => {
@@ -25,35 +76,59 @@ function OrderDetails (props) {
     getOrderDetails({orderId: params.orderId})
   }
 
+  const handleOnAddProductClick = () => {
+    let valuesCopy = deepCopy(values)
+    valuesCopy.products.push({
+      productId: getUUID(),
+      productName: '',
+      quantity: '',
+      UnitPrice: '',
+      totalPrice: '',
+      notes: ''
+    })
+
+    setValues(valuesCopy)
+  }
+
+  const handleDeleteProduct = (productId) => {
+    let valuesCopy = deepCopy(values)
+    const productIndx = valuesCopy.products.findIndex(product => product.productId === productId)
+    valuesCopy.products.splice(productIndx, 1)
+    setValues(valuesCopy)
+  }
+
+  const handleOnSave = () => {
+    console.log(values)
+  }
+
+  const renderProduct = (product, index) => {
+    const { productId } = product
+    return(
+      <Product
+        key={productId}
+        product={product}
+        deleteProductCallback={() => handleDeleteProduct(product.productId)}
+      />
+    )
+  }
+
+  const populateForm = (orderDetails) => {
+    setValues({
+      ...orderDetails
+    })
+  }
+
   useEffect(() => {
     fetchOrderDetails()
   }, [])
 
-  console.log(orderDetails)
+  useEffect(() => {
+    if(orderDetails){
+      populateForm(orderDetails)
+    }
+  }, [orderDetails])
 
-  const renderProduct = (product, index) => {
-    const { productId, productName } = product
-    return(
-      <tr key={product.productId}>
-        <td>{productId}</td>
-        <td>{productName}</td>
-        <td>
-          <div className='action-wrapper'>
-            <IconWrapper>
-              <IconContext.Provider value={{ color: "#F44336"}}>
-                <RiDeleteBin6Line />
-              </IconContext.Provider>
-            </IconWrapper>
-            <IconWrapper>
-              <IconContext.Provider value={{ color: "#1976D2" }}>
-                <GrEdit />
-              </IconContext.Provider>
-            </IconWrapper>
-          </div>
-        </td>
-      </tr>
-    )
-  }
+  console.log(values)
 
   return (
     <div className='order-details-wrapper'>
@@ -63,102 +138,118 @@ function OrderDetails (props) {
             <p className='sub-section-heading'>Billing Address</p>
             <InputField
               type='text'
-              value=''
+              value={billingAddress ? billingAddress.firstName : ''}
+              name='firstName'
               placeholder='First Name'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleBillingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              value={billingAddress ? billingAddress.lastName : ''}
+              name='lastName'
               placeholder='Last Name'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleBillingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              name='addressLine1'
+              value={billingAddress ? billingAddress.addressLine1 : ''}
               placeholder='Address line 1'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleBillingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              name='addressLine2'
+              value={billingAddress ? billingAddress.addressLine2 : ''}
               placeholder='Address line 2'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleBillingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              name='city'
+              value={billingAddress ? billingAddress.city : ''}
               placeholder='City'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleBillingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              name='state'
+              value={billingAddress ? billingAddress.state : ''}
               placeholder='State'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleBillingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              name='zipcode'
+              value={billingAddress ? billingAddress.zipcode : ''}
               placeholder='Zipcode'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleBillingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              name='country'
+              value={billingAddress ? billingAddress.country : ''}
               placeholder='Country'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleBillingAddressOnChange(event)}
             />
           </div>
           <div className='shipping-address'>
             <p className='sub-section-heading'>Shipping Address</p>
             <InputField
               type='text'
-              value=''
+              value={shippingAddress ? shippingAddress.firstName : ''}
+              name='firstName'
               placeholder='First Name'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleShippingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              value={shippingAddress ? shippingAddress.lastName : ''}
+              name='lastName'
               placeholder='Last Name'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleShippingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              value={shippingAddress ? shippingAddress.addressLine1 : ''}
+              name='addressLine1'
               placeholder='Address line 1'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleShippingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              value={shippingAddress ? shippingAddress.addressLine2 : ''}
+              name='addressLine2'
               placeholder='Address line 2'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleShippingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              value={shippingAddress ? shippingAddress.city : ''}
+              name='city'
               placeholder='City'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleShippingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              value={shippingAddress ? shippingAddress.state : ''}
+              name='state'
               placeholder='State'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleShippingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              value={shippingAddress ? shippingAddress.zipcode : ''}
+              name='zipcode'
               placeholder='Zipcode'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleShippingAddressOnChange(event)}
             />
             <InputField
               type='text'
-              value=''
+              value={shippingAddress ? shippingAddress.country : ''}
+              name='country'
               placeholder='Country'
-              onChangeCallback={handleOnChange}
+              onChangeCallback={(event)=> handleShippingAddressOnChange(event)}
             />
           </div>
         </div>
@@ -171,23 +262,26 @@ function OrderDetails (props) {
               <tr>
                 <th>Produc Id</th>
                 <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {(orderDetails && orderDetails.products.length) 
-                ? orderDetails.products.map((product, index) => renderProduct(product, index)) 
+              {(values.products && values.products.length) 
+                ? values.products.map((product, index) => renderProduct(product, index)) 
                   : null}
             </tbody>
           </table>
-          <Button size='sm' type='info'>
-            add product
+        </div>
+        <Button size='sm' type='info' buttonClickCallback={handleOnAddProductClick}>
+          add product
+        </Button>
+        <div className='save-button-wrapper'>
+          <Button size='md' type='info' buttonClickCallback={handleOnSave}>
+            save
           </Button>
-          <div className='save-button-wrapper'>
-            <Button size='md' type='info'>
-              save
-            </Button>
-          </div>
         </div>
       </Card>
 

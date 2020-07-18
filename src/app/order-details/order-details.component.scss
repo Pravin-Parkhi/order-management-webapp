@@ -32,6 +32,7 @@
     }
 
     .product-list-wrapper{
+        overflow-x: auto;
         table {
             border-collapse: collapse;
             width: 100%;
@@ -39,7 +40,6 @@
         tbody{
             tr:hover{
                 transform: scale(1,1);
-                cursor: pointer;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             }
         }
@@ -47,13 +47,17 @@
             border: 1px solid $alto-color;
             text-align: left;
             padding: 30px 10px;
+            min-width: 100px;
+            .input-wrapper{
+                margin: 0px;
+            }
         }
-        .action-wrapper{
-            display: flex;
-        }
-        .save-button-wrapper{
-            display: flex;
-            justify-content: flex-end;
-        }
+    }
+    .action-wrapper{
+        display: flex;
+    }
+    .save-button-wrapper{
+        display: flex;
+        justify-content: flex-end;
     }
 }

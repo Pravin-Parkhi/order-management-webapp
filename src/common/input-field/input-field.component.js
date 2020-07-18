@@ -1,20 +1,23 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import './input-field.component.scss'
 
 export default function InputField (props) {
-    const { type, value, placeholder } = props
-    
-    const handeOnChange = (event) => {
-        console.log(event.target.value)
+    const { type, value, disabled, placeholder, name } = props
+    const { onChangeCallback } = props
+
+    const handleChange = (event) => {
+        onChangeCallback(event)
     }
 
     return (
         <div className='input-wrapper'>
             <input
                 type={type}
+                name={name}
                 value={value}
-                onChange={handeOnChange}
+                disabled={disabled}
+                onChange={handleChange}
                 placeholder={placeholder}
             />
         </div>
