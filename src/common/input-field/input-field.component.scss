@@ -4,6 +4,7 @@
     margin-bottom: 15px;
 
     input[type=text],
+    input[type=date i],
     input[type=number]{
         width: 100%;
         padding: 12px;
@@ -11,6 +12,7 @@
         font-size: 16px;
         border-radius: 4px;
         box-sizing : border-box;
+        font-family: Open Sans;
         border: 1px solid $border-color;
 
         &:focus{

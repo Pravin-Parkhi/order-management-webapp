@@ -27,7 +27,7 @@
         }
     }
 
-    .card-wrapper:nth-child(2){
+    .card-wrapper:nth-child(4){
         margin-top: 40px;
     }
     
@@ -85,8 +85,12 @@
     .action-wrapper{
         display: flex;
     }
+    .add-product-button-wrapper{
+        margin-left: 10px;
+    }
     .save-button-wrapper{
         display: flex;
+        margin-right: 40px;
         justify-content: flex-end;
     }
 }

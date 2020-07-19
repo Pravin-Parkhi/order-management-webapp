@@ -24,17 +24,31 @@ function OrderDetails (props) {
   const [ errors, setErrors ] = useState({
     billingAddress: {},
     shippingAddress: {},
-    products: {}
+    products: {},
+    orderDate: false,
+    expectedDeliveryDate: false
   })
 
   const { orderDetails } = props
   const { history, getOrderDetails } = props
-  const { billingAddress, shippingAddress } = values
+  const { billingAddress, shippingAddress, orderDate, expectedDeliveryDate } = values
+
+  const handleDateChange = event => {
+    const {name, value} = event.target
+    setValues({
+      ...values,
+      [name]: value
+    });
+    validateBillingAddress({ 
+      ...values,
+      [name]: value
+    }, name);
+  }
 
   // billing address
   const handleBillingAddressOnChange = event => {
     const {name, value} = event.target
-    setValues({ 
+    setValues({
       ...values,
       billingAddress: {
         ...values.billingAddress,
@@ -202,7 +216,7 @@ function OrderDetails (props) {
 
   const handleOnSave = () => {
     if(!validateBillingAddress() && !validateShippingAddress() && !validateProducts()){
-      console.log(errors)
+      console.log(values)
     } else{
       console.log('Throw error')
     }
@@ -314,6 +328,16 @@ function OrderDetails (props) {
               error={errors.billingAddress.country}
               onChangeCallback={(event)=> handleBillingAddressOnChange(event)}
             />
+
+            <p className='sub-section-heading'>Order Date</p>
+            {orderDate && <InputField
+              type='date'
+              value={orderDate}
+              name='orderDate'
+              placeholder='Order date'
+              error={errors.orderDate}
+              onChangeCallback={(event)=> handleDateChange(event)}
+            />}
           </div>
 
           <div className='shipping-address'>
@@ -382,6 +406,16 @@ function OrderDetails (props) {
               error={errors.shippingAddress.country}
               onChangeCallback={(event)=> handleShippingAddressOnChange(event)}
             />
+            
+            <p className='sub-section-heading'>Excepted Delivery</p>
+            {expectedDeliveryDate && <InputField
+              type='date'
+              placeholder='Order date'
+              name='expectedDeliveryDate'
+              value={expectedDeliveryDate}
+              error={errors.expectedDeliveryDate}
+              onChangeCallback={(event)=> handleDateChange(event)}
+            />}
           </div>
         </div>
       </Card>
@@ -407,9 +441,11 @@ function OrderDetails (props) {
             </tbody>
           </table>
         </div>
-        <Button size='sm' type='info' buttonClickCallback={handleOnAddProductClick}>
-          add product
-        </Button>
+        <div className='add-product-button-wrapper'>
+          <Button size='sm' type='info' buttonClickCallback={handleOnAddProductClick}>
+            add product
+          </Button>
+        </div>
         <div className='save-button-wrapper'>
           <Button size='md' type='info' buttonClickCallback={handleOnSave}>
             save

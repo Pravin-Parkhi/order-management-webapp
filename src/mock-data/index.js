@@ -22,8 +22,8 @@ export const ORDER_LIST = {
           zipcode: '442402',
           country: 'India'
         },
-        orderDate: '04/02/2019',
-        expectedDeliveryDate: '14/02/2019',
+        orderDate: '2019-04-22',
+        expectedDeliveryDate: '2019-04-22',
         status: 'completed',
         products: [
           {
@@ -74,8 +74,8 @@ export const ORDER_LIST = {
           zipcode: 442402,
           country: 'India'
         },
-        orderDate: '04/02/2019',
-        expectedDeliveryDate: '14/02/2019',
+        orderDate: '2019-04-18',
+        expectedDeliveryDate: '2019-04-18',
         status: 'pending',
         products: [
           {
