@@ -12,3 +12,10 @@ export const getOrderDetails = (params) => {
     orderId: params.orderId
   }
 }
+
+export const saveOrder = (order) => {
+  return {
+    type: ActionTypes.SAVE_ORDER,
+    order
+  }
+}

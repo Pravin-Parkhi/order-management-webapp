@@ -1,6 +1,8 @@
-import { createStore, applyMiddleware, compose } from 'redux'
-import { routerMiddleware } from 'react-router-redux'
+import { throttle } from 'lodash'
 import { createBrowserHistory } from 'history'
+import { routerMiddleware } from 'react-router-redux'
+import { loadState, saveState } from './local-storage'
+import { createStore, applyMiddleware, compose } from 'redux'
 
 import rootReducer from '../reducers/index'
 
@@ -24,9 +26,23 @@ const composedEnhancers = compose(
   ...enhancers
 )
 
+const persistedState = loadState();
 const store = createStore(
   rootReducer,
+  persistedState,
   composedEnhancers
 )
+
+if(localStorage.getItem('state') === null){
+  saveState({
+    app: store.getState().app
+  });
+}
+
+store.subscribe(throttle(() => {
+  saveState({
+    app: store.getState().app
+  });
+}));
 
 export default store

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import React, { useState, useEffect } from 'react'
-import { getOrderDetails } from '../../actions/app.action'
+import { getOrderDetails, saveOrder } from '../../actions/app.action'
 import { validateFormField, validateForm, validations } from '../../utils/validation.utils'
 import { deepCopy, getUUID } from '../../utils/misc.utils'
 
@@ -30,7 +30,7 @@ function OrderDetails (props) {
   })
 
   const { orderDetails } = props
-  const { history, getOrderDetails } = props
+  const { history, getOrderDetails, saveOrder } = props
   const { billingAddress, shippingAddress, orderDate, expectedDeliveryDate } = values
 
   const handleDateChange = event => {
@@ -216,9 +216,12 @@ function OrderDetails (props) {
 
   const handleOnSave = () => {
     if(!validateBillingAddress() && !validateShippingAddress() && !validateProducts()){
+      saveOrder(values)
+      alert('See updated order in the console')
       console.log(values)
     } else{
-      console.log('Throw error')
+      alert('There is validation error')
+      console.log('Throw validation error')
     }
   }
 
@@ -462,4 +465,4 @@ function mapStateToProps (state) {
   }
 }
 
-export default (connect(mapStateToProps, { getOrderDetails })(OrderDetails))
+export default (connect(mapStateToProps, { getOrderDetails, saveOrder })(OrderDetails))

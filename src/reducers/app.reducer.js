@@ -1,5 +1,6 @@
 import ActionTypes from '../action-types/index'
 import { ORDER_LIST } from '../mock-data/index'
+import { deepCopy } from '../utils/misc.utils';
 
 const defaultState = {
   orderList: ORDER_LIST.orderList
@@ -22,6 +23,18 @@ const appReducer = (state = defaultState, action) => {
       return {
         ...state,
         orderDetails: orderDetails
+      }
+    }
+
+    case ActionTypes.SAVE_ORDER: {
+      let orderListCopy = deepCopy(state.orderList)
+      const updatedOrder = action.order
+      const orderIndx = orderListCopy.findIndex((order => order.orderId === updatedOrder.orderId))
+      orderListCopy.splice(orderIndx, 0, updatedOrder)
+      return {
+        ...state,
+        orderList: orderListCopy,
+        orderDetails: updatedOrder
       }
     }
 
