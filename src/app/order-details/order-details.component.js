@@ -13,6 +13,8 @@ import './order-details.component.scss'
 
 const billingAddressRequiredFields = ['firstName', 'lastName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipcode', 'country']
 const shippingAddressRequiredFields = ['firstName', 'lastName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipcode', 'country']
+const productRequiredFields = ['productName', 'quantity', 'unitPrice', 'totalPrice']
+
 const formRegex = {
   amount: validations.number
 }
@@ -21,16 +23,17 @@ function OrderDetails (props) {
   const [ values, setValues ] = useState({})
   const [ errors, setErrors ] = useState({
     billingAddress: {},
-    shippingAddress: {}
+    shippingAddress: {},
+    products: {}
   })
 
-  const { billingAddress, shippingAddress } = values
   const { orderDetails } = props
   const { getOrderDetails } = props
+  const { billingAddress, shippingAddress } = values
 
+  // billing address
   const handleBillingAddressOnChange = event => {
     const {name, value} = event.target
-    
     setValues({ 
       ...values,
       billingAddress: {
@@ -47,9 +50,33 @@ function OrderDetails (props) {
     }, name);
   }
 
+  const validateBillingAddress = (form, prop) => {
+    form = form || values
+    if (prop) {
+      let error = validateFormField(form.billingAddress[prop], formRegex[prop], billingAddressRequiredFields.indexOf(prop) >= 0)
+      setErrors({
+        ...errors,
+        billingAddress: {
+          ...errors.billingAddress,
+          [prop]: error
+        }
+      })
+      return error
+    } else {
+      const errorObj = validateForm(form.billingAddress, formRegex, billingAddressRequiredFields)
+      setErrors({
+        ...errors,
+        billingAddress: {
+          ...errorObj.fieldErrors
+        }
+      })
+      return errorObj.hasError
+    }
+  }
+
+  // shipping address
   const handleShippingAddressOnChange = event => {
     const {name, value} = event.target
-    
     setValues({
       ...values,
       shippingAddress: {
@@ -66,38 +93,6 @@ function OrderDetails (props) {
     }, name);
   }
 
-  const handleProductValueChange = (event, productId) => {
-    const {name, value} = event.target
-    let valuesCopy = deepCopy(values)
-    let productToBeUpdated = valuesCopy.products.filter(product => product.productId === productId)[0]
-    if(name === 'quantity'){
-      productToBeUpdated.totalPrice = productToBeUpdated.unitPrice * value
-    } else if (name === 'unitPrice'){
-      productToBeUpdated.totalPrice = productToBeUpdated.quantity * value
-    }
-    productToBeUpdated[name] = value
-    setValues(valuesCopy)
-  }
-
-  const validateBillingAddress = (form, prop) => {
-    form = form || values
-    if (prop) {
-      let error = validateFormField(form.billingAddress[prop], formRegex[prop], billingAddressRequiredFields.indexOf(prop) >= 0)
-      setErrors({
-        ...errors,
-        billingAddress: {
-          ...errors.billingAddress,
-          [prop]: error
-        }
-      })
-      return error
-    } else {
-      const errorObj = validateForm(form, formRegex, billingAddressRequiredFields)
-      setErrors({ ...errors, ...errorObj.fieldErrors })
-      return errorObj.hasError
-    }
-  }
-
   const validateShippingAddress = (form, prop) => {
     form = form || values
     if (prop) {
@@ -111,8 +106,70 @@ function OrderDetails (props) {
       })
       return error
     } else {
-      const errorObj = validateForm(form, formRegex, shippingAddressRequiredFields)
-      setErrors({ ...errors, ...errorObj.fieldErrors })
+      const errorObj = validateForm(form.shippingAddress, formRegex, shippingAddressRequiredFields)
+      setErrors({ 
+        ...errors, 
+        shippingAddress: {
+          ...errorObj.fieldErrors
+        }
+      })
+      return errorObj.hasError
+    }
+  }
+
+  // Products
+  const handleProductValueChange = (event, productId) => {
+    const {name, value} = event.target
+    let valuesCopy = deepCopy(values)
+    let productToBeUpdated = valuesCopy.products.filter(product => product.productId === productId)[0]
+    if(name === 'quantity'){
+      productToBeUpdated.totalPrice = productToBeUpdated.unitPrice * value
+    } else if (name === 'unitPrice'){
+      productToBeUpdated.totalPrice = productToBeUpdated.quantity * value
+    }
+    productToBeUpdated[name] = value
+    setValues(valuesCopy)
+    validateProducts(valuesCopy, name)
+  }
+
+  const validateProducts = (form, prop) => {
+    form = form || values
+    const { products } = form
+    let errorsCopy = deepCopy(errors)
+    if(prop){
+      for(let productIndx=0; productIndx<products.length; productIndx++){
+        const product = products[productIndx]
+        const { productId } = product
+        var error = validateFormField(product[prop], formRegex[prop], productRequiredFields.indexOf(prop) >= 0)
+        errorsCopy = {
+          ...errorsCopy,
+          products: {
+            ...errorsCopy.products,
+            [productId]: {
+              ...errorsCopy.products[productId],
+              [prop]: error
+            }
+          }
+        }
+      }
+      setErrors(errorsCopy)
+      return error
+    } else {
+      for(let productIndx=0; productIndx<products.length; productIndx++){
+        const product = products[productIndx]
+        const { productId } = product
+        var errorObj = validateForm(product, formRegex, productRequiredFields)
+        errorsCopy = {
+          ...errors,
+          products: {
+            ...errors.products,
+            [productId]: {
+              ...errorObj.fieldErrors
+            }
+          }
+        }
+      }
+      setErrors(errorsCopy)
       return errorObj.hasError
     }
   }
@@ -128,7 +185,7 @@ function OrderDetails (props) {
       productId: getUUID(),
       productName: '',
       quantity: '',
-      UnitPrice: '',
+      unitPrice: '',
       totalPrice: '',
       notes: ''
     })
@@ -144,16 +201,20 @@ function OrderDetails (props) {
   }
 
   const handleOnSave = () => {
-    console.log(values)
-    console.log(errors)
+    if(!validateBillingAddress() && !validateShippingAddress() && !validateProducts()){
+      console.log(errors)
+    } else{
+      console.log('Throw error')
+    }
   }
 
-  const renderProduct = (product, index) => {
+  const renderProduct = (product) => {
     const { productId } = product
     return(
       <Product
         key={productId}
         product={product}
+        errors={errors}
         onChangeCallback={(event) => handleProductValueChange(event, productId)}
         deleteProductCallback={() => handleDeleteProduct(product.productId)}
       />
@@ -233,8 +294,9 @@ function OrderDetails (props) {
             <InputField
               type='text'
               name='zipcode'
-              value={billingAddress ? billingAddress.zipcode : ''}
               placeholder='Zipcode'
+              error={errors.billingAddress.zipcode}
+              value={billingAddress ? billingAddress.zipcode : ''}
               onChangeCallback={(event)=> handleBillingAddressOnChange(event)}
             />
             <InputField
@@ -333,7 +395,7 @@ function OrderDetails (props) {
             </thead>
             <tbody>
               {(values.products && values.products.length) 
-                ? values.products.map((product, index) => renderProduct(product, index)) 
+                ? values.products.map((product) => renderProduct(product))
                   : null}
             </tbody>
           </table>
@@ -347,7 +409,6 @@ function OrderDetails (props) {
           </Button>
         </div>
       </Card>
-
     </div>
   )
 }

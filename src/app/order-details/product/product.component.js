@@ -6,7 +6,7 @@ import './product.component.scss'
 
 export default function Product (props) {
     const { productId, productName, quantity, unitPrice, note, totalPrice } = props.product
-    const { deleteProductCallback, onChangeCallback } = props
+    const { errors, deleteProductCallback, onChangeCallback } = props
 
     const handleOnChange = (event) => {
       onChangeCallback(event)
@@ -22,6 +22,7 @@ export default function Product (props) {
             readOnly={true}
             placeholder='Product Id'
             onChangeCallback={(event)=> handleOnChange(event)}
+            error={errors.products[productId] ? errors.products[productId].productId : false}
           />
         </td>
         <td>
@@ -31,6 +32,7 @@ export default function Product (props) {
             value={productName}
             placeholder='Product Name'
             onChangeCallback={(event)=> handleOnChange(event)}
+            error={errors.products[productId] ? errors.products[productId].productName : false}
           />
         </td>
         <td>
@@ -40,6 +42,7 @@ export default function Product (props) {
             value={quantity}
             placeholder='Quantity'
             onChangeCallback={(event)=> handleOnChange(event)}
+            error={errors.products[productId] ? errors.products[productId].quantity : false}
           />
         </td>
         <td>
@@ -49,6 +52,7 @@ export default function Product (props) {
             value={unitPrice}
             placeholder='Unit Price'
             onChangeCallback={(event)=> handleOnChange(event)}
+            error={errors.products[productId] ? errors.products[productId].unitPrice : false}
           />
         </td>
         <td>
@@ -59,6 +63,7 @@ export default function Product (props) {
             disabled={true}
             placeholder='Total Price'
             onChangeCallback={(event)=> handleOnChange(event)}
+            error={errors.products[productId] ? errors.products[productId].totalPrice : false}
           />
         </td>
         <td>
