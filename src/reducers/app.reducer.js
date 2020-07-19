@@ -30,7 +30,7 @@ const appReducer = (state = defaultState, action) => {
       let orderListCopy = deepCopy(state.orderList)
       const updatedOrder = action.order
       const orderIndx = orderListCopy.findIndex((order => order.orderId === updatedOrder.orderId))
-      orderListCopy.splice(orderIndx, 0, updatedOrder)
+      orderListCopy.splice(orderIndx, 1, updatedOrder)
       return {
         ...state,
         orderList: orderListCopy,
