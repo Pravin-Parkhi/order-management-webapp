@@ -13,18 +13,26 @@
         table {
             border-collapse: collapse;
             width: 100%;
+            tr{
+                border-bottom: 1px solid $alto-color;
+            }
         }
         tbody{
-            tr:hover{
-                transform: scale(1,1);
-                cursor: pointer;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            tr{
+                border-bottom: 1px solid $alto-color;
+                &:last-child{
+                    border-bottom: 0px;
+                }
+                &:hover{
+                    cursor: pointer;
+                }
             }
         }
         td, th {
-            border: 1px solid $alto-color;
             text-align: left;
             padding: 30px 10px;
+            border-left: 0px;
+            border-right: 0px;
         }
         .status{
             text-transform: capitalize;

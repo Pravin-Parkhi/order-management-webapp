@@ -1,21 +1,15 @@
 import React from 'react'
-
-import { IconContext } from "react-icons"
-import { GrEdit } from 'react-icons/gr'
-import { RiDeleteBin6Line } from 'react-icons/ri'
-
-import IconWrapper from '../../../common/icon-wrapper/icon-wrapper.component'
-
-import './product.component.scss'
 import InputField from '../../../common/input-field/input-field.component'
 import Button from '../../../common/button/button.component'
 
+import './product.component.scss'
+
 export default function Product (props) {
-    const { productId, productName, quantity, unitPrice, totalPrice } = props.product
-    const { deleteProductCallback } = props
+    const { productId, productName, quantity, unitPrice, note, totalPrice } = props.product
+    const { deleteProductCallback, onChangeCallback } = props
 
-    const handleOnChange = () => {
-
+    const handleOnChange = (event) => {
+      onChangeCallback(event)
     }
 
     return(
@@ -23,42 +17,57 @@ export default function Product (props) {
         <td>
           <InputField
             type='text'
+            name='productId'
             value={productId}
+            readOnly={true}
             placeholder='Product Id'
-            onChangeCallback={handleOnChange}
+            onChangeCallback={(event)=> handleOnChange(event)}
           />
         </td>
         <td>
           <InputField
             type='text'
+            name='productName'
             value={productName}
             placeholder='Product Name'
-            onChangeCallback={handleOnChange}
+            onChangeCallback={(event)=> handleOnChange(event)}
           />
         </td>
         <td>
           <InputField
             type='number'
+            name='quantity'
             value={quantity}
             placeholder='Quantity'
-            onChangeCallback={handleOnChange}
+            onChangeCallback={(event)=> handleOnChange(event)}
           />
         </td>
         <td>
           <InputField
             type='number'
+            name='unitPrice'
             value={unitPrice}
             placeholder='Unit Price'
-            onChangeCallback={handleOnChange}
+            onChangeCallback={(event)=> handleOnChange(event)}
           />
         </td>
         <td>
           <InputField
             type='number'
+            name='totalPrice'
             value={totalPrice}
             disabled={true}
             placeholder='Total Price'
-            onChangeCallback={handleOnChange}
+            onChangeCallback={(event)=> handleOnChange(event)}
+          />
+        </td>
+        <td>
+          <InputField
+            type='text'
+            name='note'
+            value={note}
+            placeholder='Write a note here..'
+            onChangeCallback={(event)=> handleOnChange(event)}
           />
         </td>
           <td>

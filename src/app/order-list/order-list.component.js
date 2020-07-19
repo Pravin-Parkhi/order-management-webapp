@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import classNames from 'classnames'
+import Card from '../../common/card/card.component'
 
 import './order-list.component.scss'
 
@@ -38,18 +39,20 @@ function OrderList (props) {
     <div className='order-list-wrapper'>
         <p className='section-heading'>Order List</p>
         <div className='order-list-table'>
-          <table>
-            <thead>
-              <tr>
-                <th>Order Id</th>
-                <th>Shipping Address</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(orderList && orderList.length) ? orderList.map((order, index) => renderOrder(order, index)) : null}
-            </tbody>
-          </table>
+          <Card>
+            <table>
+              <thead>
+                <tr>
+                  <th>Order Id</th>
+                  <th>Shipping Address</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(orderList && orderList.length) ? orderList.map((order, index) => renderOrder(order, index)) : null}
+              </tbody>
+            </table>
+          </Card>
         </div>
     </div>
   )

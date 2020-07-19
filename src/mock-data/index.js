@@ -32,7 +32,7 @@ export const ORDER_LIST = {
             quantity: 8,
             unitPrice: 529,
             totalPrice: 4232,
-            notes: 'This is test note'
+            note: 'This is test note'
           },
           {
             productId: 'a960b352-bf4f-4eb6-8781-95222e427459',
@@ -40,7 +40,7 @@ export const ORDER_LIST = {
             quantity: 2,
             unitPrice: 529,
             totalPrice: 1058,
-            notes: 'This is test note'
+            note: 'This is test note'
           },
           {
             productId: '15c3f018-e6e8-4d13-a0ac-2c777c352472',
@@ -48,7 +48,7 @@ export const ORDER_LIST = {
             quantity: 1,
             unitPrice: 529,
             totalPrice: 529,
-            notes: 'This is test note'
+            note: 'This is test note'
           }
         ]
       },
@@ -84,7 +84,7 @@ export const ORDER_LIST = {
             quantity: 8,
             unitPrice: 529,
             totalPrice: 4232,
-            notes: 'This is test note'
+            note: 'This is test note'
           },
           {
             productId: 'e2a685b4-d3d2-49d9-b77f-4d30da532b28',
@@ -92,7 +92,7 @@ export const ORDER_LIST = {
             quantity: 1,
             unitPrice: 529,
             totalPrice: 529,
-            notes: 'This is test note'
+            note: 'This is test note'
           }
         ]
       }

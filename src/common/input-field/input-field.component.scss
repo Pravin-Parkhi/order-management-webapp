@@ -18,4 +18,7 @@
             border: 1px solid $input-focused-color;
         }
     }
+    .error{
+        border: 1px solid $input-error-color !important;
+    }
 }
