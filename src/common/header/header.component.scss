@@ -9,14 +9,26 @@
     top: 0;
     left: 0;
     z-index: 10;
+    display: flex;
+    align-items: center;
     box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 
     0px 4px 5px 0px rgba(0,0,0,0.14), 
     0px 1px 10px 0px rgba(0,0,0,0.12);
+
     .brand-logo{
-      width: 40px;
-      height: 40px;
+      width: 60px;
+      height: auto;
+      margin-left: 20px;
+
+      @media screen and (min-width: 768px) {
+        margin-left: 80px;
+    }
     }
     .brand-name{
+      margin: 0px;
+      font-size: 28px;
+      font-weight: 600;
       color: #5f6368;
+      margin-left: 10px;
     }
   }
