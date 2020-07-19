@@ -28,7 +28,7 @@ function OrderDetails (props) {
   })
 
   const { orderDetails } = props
-  const { getOrderDetails } = props
+  const { history, getOrderDetails } = props
   const { billingAddress, shippingAddress } = values
 
   // billing address
@@ -208,6 +208,12 @@ function OrderDetails (props) {
     }
   }
 
+  const populateForm = (orderDetails) => {
+    setValues({
+      ...orderDetails
+    })
+  }
+
   const renderProduct = (product) => {
     const { productId } = product
     return(
@@ -219,12 +225,6 @@ function OrderDetails (props) {
         deleteProductCallback={() => handleDeleteProduct(product.productId)}
       />
     )
-  }
-
-  const populateForm = (orderDetails) => {
-    setValues({
-      ...orderDetails
-    })
   }
 
   useEffect(() => {
@@ -239,6 +239,13 @@ function OrderDetails (props) {
 
   return (
     <div className='order-details-wrapper'>
+      <p className='section-heading'>Order Details </p>
+
+      <div className='breadcrumb-wrapper'>
+        <p className='page-link' onClick={()=> history.push('/order-list')}>Order List</p>
+        <p className='current-page-link'>&nbsp;/&nbsp;{orderDetails ? orderDetails.orderId : ''}</p>
+      </div>
+
       <Card>
         <div className='address-container'>
           <div className='billing-address'>
@@ -395,8 +402,8 @@ function OrderDetails (props) {
             </thead>
             <tbody>
               {(values.products && values.products.length) 
-                ? values.products.map((product) => renderProduct(product))
-                  : null}
+                  ? values.products.map((product) => renderProduct(product))
+                    : null}
             </tbody>
           </table>
         </div>

@@ -1,11 +1,15 @@
 @import '../../styles/colors.scss';
 
 .order-list-wrapper{
-    margin: 20px;
+    padding: 20px;
+    @media screen and (min-width: 768px) {
+        padding: 80px;
+    }
 
     .section-heading{
         font-size: 28px;
         font-weight: 700;
+        margin-top: 0px;
     }
 
     .order-list-table{

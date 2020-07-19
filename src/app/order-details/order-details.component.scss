@@ -5,6 +5,28 @@
     @media screen and (min-width: 768px) {
         padding: 80px;
     }
+    .section-heading{
+        font-size: 28px;
+        font-weight: 700;
+        margin-top: 0px;   
+    }
+    .breadcrumb-wrapper{
+        display: flex;
+        margin-bottom: 5px;
+        .page-link{
+            font-size: 18px;
+            margin-top: 10px;
+            color: $input-focused-color;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+        .current-page-link{
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    }
+
     .card-wrapper:nth-child(2){
         margin-top: 40px;
     }
